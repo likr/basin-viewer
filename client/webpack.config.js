@@ -1,19 +1,19 @@
 const path = require('path');
 const webpack = require('webpack');
-const VueLoaderPlugin = require('vue-loader/lib/plugin')
-const CopyWebpackPlugin = require('copy-webpack-plugin')
+const VueLoaderPlugin = require('vue-loader/lib/plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const config = {
   entry: './src/main.js',
   output: {
     path: path.resolve(__dirname, './public'),
-    filename: 'build.js'
+    filename: 'build.js',
   },
   module: {
     rules: [
       {
         test: /\.vue$/,
-        loader: 'vue-loader'
+        loader: 'vue-loader',
       },
       {
         test: /\.sass$/,
@@ -23,25 +23,27 @@ const config = {
           {
             loader: 'sass-loader',
             options: {
-              indentedSyntax: true
-            }
-          }
-        ]
+              sassOptions: {
+                indentedSyntax: true,
+              },
+            },
+          },
+        ],
       },
       {
         test: /\.css$/,
-        loader: 'css-loader'
+        loader: 'css-loader',
       },
       {
         test: /\.js$/,
         loader: 'babel-loader',
-        exclude: /node_modules/
+        exclude: /node_modules/,
       },
       {
         test: /\.pug$/,
-        loader: 'pug-plain-loader'
-      }
-    ]
+        loader: 'pug-plain-loader',
+      },
+    ],
   },
   devServer: {
     contentBase: path.join(__dirname, 'public'),
@@ -49,30 +51,30 @@ const config = {
       '/api': {
         target: 'http://localhost:3000',
         pathRewrite: {
-          '^/api': ''
-        }
-      }
+          '^/api': '',
+        },
+      },
     },
-    port: 8090
+    port: 8090,
   },
   plugins: [
     new VueLoaderPlugin(),
     new CopyWebpackPlugin([
       {
         from: './node_modules/leaflet/dist/leaflet.css',
-        to: 'vendor'
+        to: 'vendor',
       },
       {
         from: './node_modules/bulma/css/bulma.min.css',
-        to: 'vendor'
-      }
-    ])
-  ]
+        to: 'vendor',
+      },
+    ]),
+  ],
 };
 
 module.exports = (env, argv) => {
   if (argv.mode === 'development') {
-    config.devtool = 'inline-source-map'
+    config.devtool = 'inline-source-map';
   }
-  return config
+  return config;
 };
